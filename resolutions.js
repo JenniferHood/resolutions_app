@@ -32,9 +32,20 @@ if (Meteor.isClient) {
     }
   });
 
+Template.resolution.helpers({
+  isOwner: function(){
+    return this.owner === Meteor.userId();
+  }
+
+});
+
 Template.resolution.events({ //adding functionality to the 'resolution' template, i.e: deleting from the DB
   'click .toggle-checked' : function(){
     Meteor.call("updateResolution", this._id, !this.checked);
+  },
+
+  'click .toggle-private': function(){
+    Meteor.call("setPrivate", this._id, !this.private);
   },
 
   'click .delete' : function(){ //dont need the event in the args, just leave it blank
@@ -64,7 +75,8 @@ Meteor.methods({
   addResolution: function(title){
      Resolutions.insert({ 
         title: title,
-        createdAt: new Date()
+        createdAt: new Date(),
+        owner: Meteor.userId()
       });
   },
   
@@ -74,6 +86,18 @@ Meteor.methods({
 
   deleteResolution: function(id){
     Resolutions.remove(id);
+  },
+
+  setPrivate: function(id, private){
+    var res = Resolutions.findOne(id) //'findOne' is a Mongo DB method that will find one resolution from out collection
+ 
+    if(res.owner !== Meteor.userId( )){
+      throw new Meteor.Error('not-authorized');
+    }
+
+      Resolutions.update(id, {$set: {private: private}});
+
+
   }
 });
 
