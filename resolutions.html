@@ -3,7 +3,9 @@
 </head>
 
 <body>
+<div id="login-button">
 {{> loginButtons}}
+</div>
   <div class="container">	
     <header>
     	<h1>Monthly Resolutions</h1>
@@ -36,21 +38,3 @@
   </div>
 </body>
 
-<template name="resolution">
-  <li class="{{#if checked}}checked{{/if}}">
-   {{#if isOwner}}
-    <input type="checkbox" checked="{{checked}}" class="toggle-checked">
-         <button class="toggle-private">
-      	{{#if private}}
-      	  Private
-      	{{else}}
-      	  Public
-      	{{/if}}  
-      </button>
-      {{/if}}
-     <span class="text"> {{title}} </span> 
-      {{#if isOwner}}
-    <button class="delete">Remove</button> 
-      {{/if}}
-  </li>
-</template>
