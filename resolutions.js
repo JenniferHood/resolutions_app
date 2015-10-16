@@ -65,7 +65,13 @@ if (Meteor.isServer) {
   });
 
   Meteor.publish("resolutions", function(){
-    return Resolutions.find();
+    return Resolutions.find({
+      //Mongo query to return resolutions that are not set to private or is the owner
+      $or: [ 
+        { private: {$ne: true} }, //when resolution is not equal to private
+        { owner: this.userId } //if the owner owns the resolution, always show it
+      ]
+    });
   });
 
 }
@@ -91,7 +97,7 @@ Meteor.methods({
   setPrivate: function(id, private){
     var res = Resolutions.findOne(id) //'findOne' is a Mongo DB method that will find one resolution from out collection
  
-    if(res.owner !== Meteor.userId( )){
+    if(res.owner !== Meteor.userId()){
       throw new Meteor.Error('not-authorized');
     }
 
