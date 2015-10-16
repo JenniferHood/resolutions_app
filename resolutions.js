@@ -33,11 +33,11 @@ if (Meteor.isClient) {
 
 Template.resolution.events({ //adding functionality to the 'resolution' template, i.e: deleting from the DB
   'click .toggle-checked' : function(){
-    Resolutions.update(this._id, {$set: {checked: !this.checked}});
+    Meteor.call("updateResolution", this._id, !this.checked);
   },
 
   'click .delete' : function(){ //dont need the event in the args, just leave it blank
-    Resolutions.remove(this._id); //grabs the item and deleted the DB id of the item
+    Meteor.call("deleteResolution", this._id); //grabs the item and deleted the DB id of the item
   }
 });
 
@@ -60,6 +60,14 @@ Meteor.methods({
         title: title,
         createdAt: new Date()
       });
+  },
+  
+  updateResolution: function(id, checked){
+    Resolutions.update(id, {$set: {checked: checked}});
+  },
+
+  deleteResolution: function(id){
+    Resolutions.remove(id);
   }
 });
 
