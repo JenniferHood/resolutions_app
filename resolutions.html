@@ -1,0 +1,45 @@
+<head>
+  <title>Resolutions_app</title>
+</head>
+
+<body>
+{{> loginButtons}}
+  <div class="container">	
+    <header>
+    	<h1>Monthly Resolutions</h1>
+          
+      <!--   <form class="new-resolution">
+          <input type="text" name="text" placeholder="A new resolution" />
+          <select name="month" id="month">
+          	<option value="March"> March </option>
+          	<option value="April"> April </option>
+          </select>
+        </form>  --> 
+          <label class="hide-finished">
+           <input type="checkbox" checked="{{hideFinished}}">
+           Hide Finished Resolutions
+          </label>
+ 
+          {{#if currentUser}} <!-- this checks to see if user is logged in -->
+    	<form class="new-resolution">
+    		<input type="text" name="title" placeholder="A new resolution">
+    		<input type="submit" value="Submit">
+    	</form>
+    	  {{/if}}
+
+    </header>
+  <ul>
+  {{# each resolutions}} 
+    {{> resolution}}
+  {{/each }}
+  </ul>
+  </div>
+</body>
+
+<template name="resolution">
+  <li class="{{#if checked}}checked{{/if}}">
+    <input type="checkbox" checked="{{checked}}" class="toggle-checked">
+     <span class="text"> {{title}} </span> 
+    <button class="delete">Remove</button> 
+  </li>
+</template>
